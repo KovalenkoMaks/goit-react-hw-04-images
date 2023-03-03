@@ -1,6 +1,7 @@
 import axios from 'axios';
 
 export const imagesArr = async search => {
+  //   console.log(search);
   const response = await axios
     .get(
       `https://pixabay.com/api/?q=${search}&page=1&key=33294397-381f15b78d88cb787350f045d&image_type=photo&orientation=horizontal&per_page=12`
@@ -16,7 +17,7 @@ export const imagesArr = async search => {
   return response;
 };
 
-export const NextSearch = async ({ search }, page) => {
+export const NextSearch = async (search, page) => {
   // console.log(page);
   const response = await axios
     .get(

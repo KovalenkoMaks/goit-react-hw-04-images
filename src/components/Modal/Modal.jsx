@@ -1,49 +1,33 @@
 import style from 'components/Styles.module.css';
-import { Component } from 'react';
+import { useEffect } from 'react';
 
-export default class Modal extends Component {
-  stats = {};
-
-  componentDidMount() {
-    window.addEventListener('keydown', this.handleEsc);
+export default function Modal({ modalImgId, closeModal }) {
+  useEffect(() => {
+    window.addEventListener('keydown', handleEsc);
     document.querySelector('ul').style = 'overflow: hidden';
-  }
 
-  componentWillUnmount() {
-    window.removeEventListener('keydown', this.handleEsc);
-    document.querySelector('ul').style = 'overflow: visible';
-  }
-  handleEsc = e => {
+    return () => {
+      window.removeEventListener('keydown', handleEsc);
+      document.querySelector('ul').style = 'overflow: visible';
+    };
+    // eslint-disable-next-line
+  }, []);
+  function handleEsc(e) {
     if (e.key === 'Escape') {
-      this.props.closeModal();
+      closeModal();
     }
-  };
-  handeleBackDropClick = e => {
+  }
+  const handeleBackDropClick = e => {
     if (e.currentTarget === e.target) {
-      this.props.closeModal();
+      closeModal();
     }
   };
-  stopScroll() {
-    window.scrollTo(0, 0);
-  }
-  render() {
-    const { modalImgId } = this.props;
-    const [img] = modalImgId;
-    return (
-      <div
-        key={img.id}
-        className={style.Overlay}
-        onClick={this.handeleBackDropClick}
-      >
-        <div className={style.Modal}>
-          <img
-            src={img.largeImageURL}
-            alt={img.tags}
-            width="600"
-            height="800"
-          />
-        </div>
+  const [img] = modalImgId;
+  return (
+    <div key={img.id} className={style.Overlay} onClick={handeleBackDropClick}>
+      <div className={style.Modal}>
+        <img src={img.largeImageURL} alt={img.tags} width="600" height="800" />
       </div>
-    );
-  }
+    </div>
+  );
 }
